@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farming Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.1.4/dist/boxicons.js' rel='stylesheet'>
+    
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">
+            <img class="logo-image" src="design-removebg-preview.png" alt="logo">
+        </div>
+        <a href="#" onclick="showSection('dashboard')" style="text-decoration:none;color:#fff"><h2>Osiris</h2></a>
+        <ul>
+            <!-- <li><a href="#" onclick="showSection('dashboard')"><i class='bx bxs-dashboard'></i> Dashboard</a></li> -->
+            <li><a href="#" onclick="showSection('sensorReadings')"><i class='bx bx-wifi' ></i> Sensor Readings</a></li>
+            <li><a href="#" onclick="showSection('reports')"><i class='bx bxs-report' ></i> Reports</a></li>
+            <li><a href="#" onclick="showSection('weather')"><i class='bx bxs-cloud-rain' ></i> Weather</a></li>
+            <li><a href="#" onclick="showSection('recommendations')"><i class='bx bxs-badge-check' ></i> Recommendations</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div id="dashboard" class="section dashboard active">
+            <div class="dashboard-img" >
+                <img src="Untitled_design-removebg-preview.png" alt="124">
+            </div>
+            <div id="welcomeMessage1">
+                <h1 id="welcomeMessage1" style="text-align: center;">Welcome Back, Samuel</h1>
+            </div>
+            <p id="punchline" class="punchline-text">Osiris, Technology that drives progress.</p> <!-- Punchline text -->
+        </div>
+        
+        <div id="sensorReadings" class="section">
+            <h2>Sensor Readings</h2>
+            <div class="section-chart">
+                <div class="card" id="temperatureGauge">
+                    <!-- Plotly chart will be rendered here -->
+                </div>
+                <div class="card" id="humidityGauge">
+                    <!-- Plotly chart will be rendered here -->
+                </div>
+                <div class="card" id="soilMoistureGauge">
+                    <!-- Plotly chart will be rendered here -->
+                </div>
+                <div class="card" id="waterLevelGauge">
+                    <!-- Plotly chart will be rendered here -->
+                </div>
+                <div class="card" id="fertilizerLevelGauge">
+                    <!-- Plotly chart will be rendered here -->
+                </div>
+                
+                <div id="npkSensorCard" class="card">
+                    <h3>NPK Sensor Readings</h3>
+                    <p class="forecast-row" style="padding: 1rem;"><strong>1. Nitrogen (N):</strong> <span id="nitrogenValue">Loading...</span> ppm</p>
+                    <p class="forecast-row" style="padding:1rem"><strong>2. Phosphorus (P):</strong> <span id="phosphorusValue">Loading...</span> ppm</p>
+                    <p class="forecast-row" style="padding: 1rem;"><strong>3. Potassium (K):</strong> <span id="potassiumValue">Loading...</span> ppm</p>
+                </div>
+                
+            </div>
+        </div>
+        <div id="reports" class="section">
+            <h2>Reports</h2>
+        
+            <div class="daily-average">
+                <h3>Daily Average Sensor Readings</h3>
+                <div class="cards-container-report" >
+                    <p class="card"> <i class='bx bxs-thermometer' ></i> Average Temperature :  <span id="averageTemperature" style="margin-inline: 0.5rem;font-weight: 600;">Loading...</span> °C</p>
+                    <p class="card"><i class='bx bxs-droplet-half' ></i> Average Humidity :  <span id="averageHumidity" style="margin-inline: 0.5rem;font-weight: 600;">Loading...</span> %</p>
+                    <p class="card"><i class='bx bxl-mongodb' ></i> Average Soil Moisture :  <span id="averageSoilMoisture" style="margin-inline: 0.5rem;font-weight: 600;">Loading...</span> %</p>
+                    <p class="card"><i class='bx bx-water' ></i> Total Water Used :  <span id="totalWaterUsed" style="margin-inline: 0.5rem;font-weight: 600;">Loading...</span> liters</p>
+                    <p class="card"><i class='bx bx-shower' ></i> Total Fertilizer Used :  <span id="totalFertilizerUsed" style="margin-inline: 0.5rem;font-weight: 600;">Loading...</span> liters</p>
+                </div>
+            </div>
+        
+            <div class="daily-weather-report">
+                <h3>Daily Weather Report</h3>
+                <div id="weatherData-report" class="card-weather-report">
+                    <div class="weatherData-upper">
+                        <div class="weatherData-upper-upper">
+                            <img id="weatherIcon-report" src="" alt="Weather Icon" style="width: 80px; height: 80px;">
+                            <span id="weatherTemperature-report">Loading...</span>
+                        </div>
+                        <div class="weatherData-upper-lower">
+                            <p><span id="weatherDescription-report">Loading...</span></p>
+                        </div>
+                        
+                    </div>
+                    <div class="weatherData-lower">
+                        <p><i class='bx bxs-droplet' ></i> <span id="weatherHumidity-report">Loading...</span></p>
+                        <p><i class='bx bx-wind' ></i> <span id="weatherWindSpeed-report">Loading...</span></p>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="historical-reading">
+                <h3>Historical Readings</h3>
+                <div class="historical-reading-charts">
+                    <div id="temperatureChart" class="card"></div>
+                    <div id="humidityChart" class="card"></div>
+                    <div id="soilMoistureChart" class="card"></div>
+                    <div id="waterUsedChart" class="card"></div>
+                    <div id="fertilizerUsedChart" class="card"></div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div id="weather" class="section">
+            <h2>Weather</h2>
+            <div id="weather-content" class="cards-container-weather">
+                <div id="weatherData" class="card-weather">
+                    <h2>Current Weather</h2>
+                    <div class="weatherData-upper">
+                        <div class="weatherData-upper-upper">
+                            <img id="weatherIcon" src="" alt="Weather Icon" style="width: 80px; height: 80px;">
+                            <span id="weatherTemperature">Loading...</span>
+                        </div>
+                        <div class="weatherData-upper-lower">
+                            <p><span id="weatherDescription">Loading...</span></p>
+                        </div>
+                        
+                    </div>
+                    <div class="weatherData-lower">
+                        <p><i class='bx bxs-droplet' ></i> <span id="weatherHumidity">Loading...</span></p>
+                        <p><i class='bx bx-wind' ></i> <span id="weatherWindSpeed">Loading...</span></p>
+                    </div>
+                </div>
+                <div id="forecastData" class="card-weather card">
+                    <h2>3-Days Forecast</h2>
+                    <div id="forecastData-container">
+                        <div class="forecast-row">
+                            <img class="forecast-icon" src="icon1.png" alt="Weather Icon">
+                            <span class="forecast-temperature">25°C</span>
+                            <span class="forecast-date">Mon, Oct 9</span>
+                        </div>
+                        <div class="forecast-row">
+                            <img class="forecast-icon" src="icon2.png" alt="Weather Icon">
+                            <span class="forecast-temperature">27°C</span>
+                            <span class="forecast-date">Tue, Oct 10</span>
+                        </div>
+                        <div class="forecast-row">
+                            <img class="forecast-icon" src="icon3.png" alt="Weather Icon">
+                            <span class="forecast-temperature">22°C</span>
+                            <span class="forecast-date">Wed, Oct 11</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="location-map" class="card-weather">
+                    <h2>Location</h2>
+                    <div id="map-1">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30375.40710931866!2d34.1554209387258!3d1.0799005385611518!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1778b6126bdea17b%3A0xb84df43e61b7b568!2sMbale!5e1!3m2!1sen!2sug!4v1729346523483!5m2!1sen!2sug" width="" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="recommendations" class="section">
+            <h2> <i class='bx bxs-badge-check' ></i> Recommendations</h2>
+            <p>Suggestions to improve the system performance and maintain optimal conditions.</p>
+        
+            <div class="recommendation-cards">
+                <div class="card">
+                    <h3>Adjust Irrigation Schedule</h3>
+                    <p>Based on the recent sensor readings, it is recommended to adjust the irrigation schedule to avoid overwatering.</p>
+                </div>
+                <div class="card">
+                    <h3>Check Fertilizer Levels</h3>
+                    <p>The NPK sensor indicates low nitrogen levels. Consider adding a nitrogen-rich fertilizer.</p>
+                </div>
+                <div class="card">
+                    <h3>Increase Ventilation</h3>
+                    <p>High humidity levels detected. Improving ventilation may help in lowering the humidity to a more optimal range.</p>
+                </div>
+            </div>
+        
+            <h2>Resources</h2>
+            <div class="resources-section">
+                <div class="resource-category">
+                    <h3><i class='bx bx-book-content' ></i> Articles</h3>
+                    <div class="resource-cards">
+                        <div class="card">
+                            <h4>Understanding Soil Moisture Levels</h4>
+                            <p>Learn about the importance of soil moisture and its impact on crop growth.</p>
+                            <a href="https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/soil-moisture" class="read-more more" target="_blank">Read More</a>
+                        </div>
+                        <div class="card">
+                            <h4>Optimizing Irrigation Systems</h4>
+                            <p>Discover strategies for effective irrigation management to save water and improve crop yield.</p>
+                            <a href="https://example.com/article2" class="read-more more" target="_blank">Read More</a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="resource-category">
+                    <h3> <i class='bx bx-book-bookmark'></i> Books</h3>
+                    <div class="resource-cards">
+                        <div class="card">
+                            <h4>Dirt to Soil: One Family’s Journey Into Regenerative Agriculture</h4>
+                            <p>Author: Gabe Brown, 2018</p>
+                            <a href="https://www.amazon.com/Dirt-Soil-Familys-Regenerative-Agriculture/dp/1603587632" class="learn-more more" target="_blank">Learn More</a>
+                        </div>
+                        <div class="card">
+                            <h4>The Market Gardener: A Successful Grower's Handbook for Small-Scale Organic Farming</h4>
+                            <p>Author:  Jean-Martin Fortier </p>
+                            <a href="https://www.amazon.com/Market-Gardener-Successful-Handbook-Small-scale/dp/0865717656" class="learn-more more" target="_blank">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="resource-category">
+                    <h3> <i class='bx bx-laptop' ></i> Online Courses</h3>
+                    <div class="resource-cards">
+                        <div class="card">
+                            <h4>Precision Agriculture Technology</h4>
+                            <p>Instructor: Dr. Emily Johnson</p>
+                            <a href="https://example.com/course1" class="more" target="_blank">Enroll Now</a>
+                        </div>
+                        <div class="card">
+                            <h4>Sustainable Farming Practices</h4>
+                            <p>Instructor: Prof. Mark Thompson</p>
+                            <a href="https://example.com/course2" class="more" target="_blank">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script src="app.js"></script>
+    
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script>
+    (function(){
+        emailjs.init('JxSuoo-OeJ0mmtDA_'); // Replace with your actual user ID
+    })();
+
+    function sendEmail(reportData) {
+        const templateParams = {
+            to_email: 'lunghesam@gmail.com', // Replace with the actual recipient's email
+            message: reportData,
+        };
+
+        emailjs.send('service_o7z3ymg', 'template_65vwzu8', templateParams) // Replace with your service and template ID
+            .then((response) => {
+                console.log('Email sent successfully!', response.status, response.text);
+            }, (error) => {
+                console.error('Failed to send email:', error);
+            });
+    }
+
+    function compileReportData() {
+        // Replace this with your actual report data compilation logic
+        return "1. Daily Report: \nTemperature: 25°C, Humidity: 60%, Moisture: 50%, Water Level:60%, Fertilizer Level:60%, Total Water Used :1 liters, Total Fertilizer used: 0.3 liters\n. Recommendations: Based on the recent sensor readings, it is recommended to adjust the irrigation schedule to avoid overwatering. \nNext Fertilization: in 18 hours";
+    }
+
+    // Send email every 15 seconds
+    setInterval(() => {
+        const reportData = compileReportData(); // Get the latest report data
+        sendEmail(reportData); // Send the email with the report data
+    }, 800000000); // 15000 milliseconds = 15 seconds
+</script>
+
+    
+</body>
+</html>
